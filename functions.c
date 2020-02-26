@@ -26,7 +26,8 @@ unsigned long popFIFO(FIFO *F){
 };
 
 int inFIFO(FIFO *F, unsigned long u){
-	for (unsigned long i = 0; i<F->end_FIFO; ++i){
+	unsigned long i;
+	for (i = 0; i<F->end_FIFO; ++i){
 		if (u == F->FIFO_list[i]){
 			return 1;
 		}
@@ -39,22 +40,22 @@ void applyBFS(adjlist* g, unsigned long s){
 	// création d'une FIFO
 	FIFO F;
 
-	initFIFO(*F, g->n);
-	pushFIFO(F, s);
+	initFIFO(&F, g->n);
+	pushFIFO(&F, s);
 
-	while (F->size_FIFO>0){
+	while (F.size_FIFO>0){
 
 		// on pop un noeud
-		printf("coucou");
-		unsigned long u = popFIFO(F);
-		printf("Noeud %f\n", u);
+		unsigned long u = popFIFO(&F);
+		printf("Noeud %d\n", u);
 
 		// parcours des voisins
-		for (unsigned long i = g->cd[u]; i<g->cd[u+1]; ++i){
+		unsigned long i;
+		for (i = g->cd[u]; i<g->cd[u+1]; ++i){
 			unsigned long v = g->adj[i];
 
-			if (inFIFO(F, v) == 0){
-				pushFIFO(F, v);
+			if (inFIFO(&F, v) == 0){
+				pushFIFO(&F, v);
 			}
 		}
 	}
