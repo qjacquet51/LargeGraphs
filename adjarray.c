@@ -114,7 +114,7 @@ void free_adjlist(adjlist *g){
 	free(g);
 }
 
-int main(int argc,char** argv){
+/*int main(int argc,char** argv){
 	adjlist* g;
 	time_t t1,t2;
 
@@ -137,5 +137,5 @@ int main(int argc,char** argv){
 
 	return 0;
 }
-
+*/
 
