@@ -3,60 +3,154 @@ typedef struct {
 	unsigned long begin_FIFO;
 	unsigned long end_FIFO;
 	unsigned long size_FIFO;
+	unsigned long *FIFO_marked;
 } FIFO;
 
 void initFIFO(FIFO *F, unsigned long size){
 	F->FIFO_list = malloc(size*sizeof(unsigned long));
+	F->FIFO_marked = calloc(size, sizeof(unsigned long));
 	F->begin_FIFO = 0;
 	F->end_FIFO = 0;
 	F->size_FIFO = 0;
+};
+
+void reinitFIFO(FIFO *F){
+	F->begin_FIFO = 0;
+	F->end_FIFO = 0;
+	F->size_FIFO = 0;
+};
+
+void reinitFIFO_marked(FIFO *F, unsigned long size){
+	free(F->FIFO_marked);
+	F->FIFO_marked = calloc(size, sizeof(unsigned long));
 };
 
 void pushFIFO(FIFO *F, unsigned long e){
 	F->FIFO_list[F->end_FIFO] = e;
 	++(F->end_FIFO);
 	++(F->size_FIFO);
+	F->FIFO_marked[e] = 1;
 };
 
 unsigned long popFIFO(FIFO *F){
 	unsigned long e = F->FIFO_list[F->begin_FIFO];
 	++(F->begin_FIFO);
 	--(F->size_FIFO);
+	F->FIFO_marked[e] = -1;
 	return e;
 };
 
-int inFIFO(FIFO *F, unsigned long u){
-	unsigned long i;
-	for (i = 0; i<F->end_FIFO; ++i){
-		if (u == F->FIFO_list[i]){
-			return 1;
+int getMarkFIFO(FIFO *F, unsigned long e){
+	return F->FIFO_marked[e];
+}
+
+unsigned long getSizeFIFO(FIFO *F){
+	return F->size_FIFO;
+}
+
+void findClusters(adjlist* g, STATS *s){
+
+	// création d'une FIFO
+	FIFO F;
+	unsigned long first_unviewed = 0;
+	unsigned long nb_nodes_in_cluster = 0;
+
+	initFIFO(&F, g->n);
+
+	unsigned long max_size = 0;
+	unsigned long entry_max_size = 0;
+	unsigned long i, u, v;
+
+	while (first_unviewed < g->n){
+
+		reinitFIFO(&F);
+		pushFIFO(&F, first_unviewed);
+		nb_nodes_in_cluster = 0;
+
+		while (getSizeFIFO(&F)>0){
+
+			// on pop un noeud
+			u = popFIFO(&F);
+			++ nb_nodes_in_cluster;
+
+			// on met à jour le prochain qui n'a pas été vu
+			if (first_unviewed == u){
+				while (getMarkFIFO(&F, first_unviewed) != 0 && first_unviewed < g->n){
+					++ first_unviewed;
+				}
+			}
+
+			// parcours des voisins
+			for (i = g->cd[u]; i<g->cd[u+1]; ++i){
+				v = g->adj[i];
+
+				if (getMarkFIFO(&F, v) == 0){
+					pushFIFO(&F, v);
+				}
+			}
+		}
+		if (nb_nodes_in_cluster>1){
+
+			if (nb_nodes_in_cluster > max_size){
+				max_size = nb_nodes_in_cluster;
+				entry_max_size = u;
+
+			}
 		}
 	}
-	return 0;
+
+	s->max_size_cluster = max_size;
+	s->ratio_max_size_cluster =  (float)max_size/(float)g->n;
+	s->entry_max_size_cluster = entry_max_size;
 };
 
-void applyBFS(adjlist* g, unsigned long s){
+void findDiameter(adjlist* g, STATS *s){
 
 	// création d'une FIFO
 	FIFO F;
 
 	initFIFO(&F, g->n);
-	pushFIFO(&F, s);
+	
+	unsigned long start = s->entry_max_size_cluster;
+	unsigned long end_level = s->entry_max_size_cluster;
+	unsigned long tmp_end_level = 0;
+	unsigned long level = 0;
+	unsigned long max_nb_iter = 10;
+	unsigned long nb_iter = 0;
+	unsigned long i, u, v;
 
-	while (F.size_FIFO>0){
+	while (nb_iter < max_nb_iter){
 
-		// on pop un noeud
-		unsigned long u = popFIFO(&F);
-		printf("Noeud %d\n", u);
+		++ nb_iter;
+		reinitFIFO(&F);
+		reinitFIFO_marked(&F, g->n);
+		start = end_level;
+		pushFIFO(&F, start);
+		level = 0;
 
-		// parcours des voisins
-		unsigned long i;
-		for (i = g->cd[u]; i<g->cd[u+1]; ++i){
-			unsigned long v = g->adj[i];
+		while (getSizeFIFO(&F)>0){
 
-			if (inFIFO(&F, v) == 0){
-				pushFIFO(&F, v);
+			// on pop un noeud
+			u = popFIFO(&F);
+
+			// parcours des voisins
+			for (i = g->cd[u]; i<g->cd[u+1]; ++i){
+				v = g->adj[i];
+
+				if (getMarkFIFO(&F, v) == 0){
+					pushFIFO(&F, v);
+
+					// on marque le dernier du palier en cours
+					tmp_end_level = v;
+				}
+			}
+			// on met à jour le dernier élement du palier
+			if (u == end_level && tmp_end_level != end_level){
+				end_level = tmp_end_level;
+				++ level;
 			}
 		}
 	}
+
+	s->diameter = level;
 };

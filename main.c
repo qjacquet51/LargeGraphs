@@ -1,9 +1,10 @@
 #include "adjarray.c"
+#include "stats.c"
 #include "functions.c"
 
 int main(int argc,char** argv){
 
-	char* file = "data/email-Eu-core.txt";
+	char* file = argv[1];//"instances/email-Eu-core.txt";
 
 	adjlist* g;
 	time_t t1,t2;
@@ -25,8 +26,11 @@ int main(int argc,char** argv){
 	printf("- Overall time = %ldh%ldm%lds\n",(t2-t1)/3600,((t2-t1)%3600)/60,((t2-t1)%60));
 
 
-	//------------ BFS
-	applyBFS(g, 0);
+	//------------ Test des fonctions
+	STATS s;
+	findClusters(g, &s);
+	findDiameter(g, &s);
+	showSTATS(&s);
 
 	//------------ LIBERATION GRAPHE
 	free_adjlist(g);
