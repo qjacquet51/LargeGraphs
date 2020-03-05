@@ -1,4 +1,5 @@
 #include "adjarray.c"
+#include "sort.c"
 #include "stats.c"
 #include "functions.c"
 
@@ -28,8 +29,19 @@ int main(int argc,char** argv){
 
 	//------------ Test des fonctions
 	STATS s;
+
+	printf("\nDEBUT Calcul des clusters\n");
 	findClusters(g, &s);
+	printf("FIN Calcul des clusters\n");
+
+	printf("\nDEBUT Calcul du diametre\n");
 	findDiameter(g, &s);
+	printf("DEBUT Calcul du diametre\n");
+
+	printf("\nDEBUT Calcul des triangles\n");
+	findTriangles(g, &s);
+	printf("DEBUT Calcul des triangles\n");
+
 	showSTATS(&s);
 
 	//------------ LIBERATION GRAPHE

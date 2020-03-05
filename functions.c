@@ -25,6 +25,10 @@ void reinitFIFO_marked(FIFO *F, unsigned long size){
 	F->FIFO_marked = calloc(size, sizeof(unsigned long));
 };
 
+void freeFIFO(FIFO *F){
+	free(F->FIFO_marked);
+	free(F->FIFO_list);
+}
 void pushFIFO(FIFO *F, unsigned long e){
 	F->FIFO_list[F->end_FIFO] = e;
 	++(F->end_FIFO);
@@ -102,6 +106,8 @@ void findClusters(adjlist* g, STATS *s){
 	s->max_size_cluster = max_size;
 	s->ratio_max_size_cluster =  (float)max_size/(float)g->n;
 	s->entry_max_size_cluster = entry_max_size;
+
+	freeFIFO(&F);
 };
 
 void findDiameter(adjlist* g, STATS *s){
@@ -153,4 +159,63 @@ void findDiameter(adjlist* g, STATS *s){
 	}
 
 	s->diameter = level;
+
+	freeFIFO(&F);
+};
+
+unsigned long intersect(unsigned long u, unsigned long v, unsigned long** tsl, unsigned long *size_tsl){
+	unsigned long i, j;
+	unsigned long nb = 0;
+	for (i=0; i<size_tsl[u]; ++i){
+		if (v < tsl[u][i]){
+			for (j=0; j<size_tsl[v]; ++j){
+				if (tsl[u][i]==tsl[v][j]){
+					//printf("%d, %d, %d\n", u, v, tsl[u][i]);
+					++nb;
+					break;
+				}
+			}
+		}
+	}
+	return nb;
+};
+
+void findTriangles(adjlist *g, STATS *s){
+	unsigned long u, i, j;
+	unsigned long **tsl = malloc(g->n*sizeof(*tsl));
+	unsigned long *size_tsl = calloc(g->n, sizeof(unsigned long));
+	
+	// construction de tsl
+	for (u=0; u<g->n; ++u){
+		tsl[u] = calloc(g->cd[u+1]-g->cd[u], sizeof(unsigned long));
+		
+		for (i = 0; i<g->cd[u+1]-g->cd[u]; ++i){
+			if (g->adj[i+g->cd[u]]> u){
+				tsl[u][size_tsl[u]] = g->adj[i+g->cd[u]];
+				++size_tsl[u];
+			}
+		}
+		if (size_tsl[u] >= 2){
+			mergeSort(g, tsl[u], 0, size_tsl[u]-2);
+		}
+	}
+	
+	//recherche dans toutes les aretes
+	unsigned long v;
+	unsigned long nb_triangles = 0;
+	for (u=0; u<g->n; ++u){
+		for (i = g->cd[u]; i<g->cd[u+1]; ++i){
+			v = g->adj[i];
+			if (u<v){
+				nb_triangles += intersect(u, v, tsl, size_tsl);
+			}
+		}
+	}
+
+	s->nb_triangles = nb_triangles;
+
+	// on libère la mémoire
+	free(size_tsl);
+	free(tsl);
+	
 };

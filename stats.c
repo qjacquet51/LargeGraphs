@@ -4,6 +4,7 @@ typedef struct
 	unsigned long entry_max_size_cluster;
 	unsigned long max_size_cluster;
 	double ratio_max_size_cluster;
+	unsigned long nb_triangles;
 } STATS;
 
 void initSTATS(STATS *s){
@@ -11,6 +12,7 @@ void initSTATS(STATS *s){
 	s->entry_max_size_cluster = 0;
 	s->max_size_cluster = 0;
 	s->ratio_max_size_cluster = 0;
+	s->nb_triangles = 0;
 }
 
 void showSTATS(STATS *s){
@@ -18,5 +20,6 @@ void showSTATS(STATS *s){
 	printf("Taille plus grand cluster: %d\n", s->max_size_cluster);
 	printf("Ratio plus grand cluster: %.5f\n", s->ratio_max_size_cluster);
 	printf("Plus grand diametre trouve: %d\n", s->diameter);
+	printf("Nombre de triangles: %d\n", s->nb_triangles);
 	printf("-------------------------------------\n");
 }
