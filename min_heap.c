@@ -1,25 +1,13 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+#include "min_heap.h"
 
-int HEAP_SIZE = 20;
+//int HEAP_SIZE = 20;
 
-struct Heap{
-    int *arr;
-    int count;
-    int capacity;
-    int heap_type; // for min heap , 1 for max heap
-};
-typedef struct Heap Heap;
 
-Heap *CreateHeap(int capacity,int heap_type);
-void insert(Heap *h, int key);
-void print(Heap *h);
-void heapify_bottom_top(Heap *h,int index);
-void heapify_top_bottom(Heap *h, int parent_node);
-int PopMin(Heap *h);
 
-int main(){
+int main(int HEAP_SIZE){
     int i;
     Heap *heap = CreateHeap(HEAP_SIZE, 0); //Min Heap
     if( heap == NULL ){
