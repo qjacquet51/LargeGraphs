@@ -3,10 +3,6 @@
 
 #include "min_heap.h"
 
-//int HEAP_SIZE = 20;
-
-
-
 int main(int HEAP_SIZE){
     int i;
     Heap *heap = CreateHeap(HEAP_SIZE); //Min Heap
