@@ -9,7 +9,7 @@
 
 int main(int HEAP_SIZE){
     int i;
-    Heap *heap = CreateHeap(HEAP_SIZE, 0); //Min Heap
+    Heap *heap = CreateHeap(HEAP_SIZE); //Min Heap
     if( heap == NULL ){
         printf("__Memory Issue____\n");
         return -1;
@@ -27,7 +27,7 @@ int main(int HEAP_SIZE){
     return 0;
 }
 
-Heap *CreateHeap(int capacity,int heap_type){
+Heap *CreateHeap(int capacity){
     Heap *h = (Heap * ) malloc(sizeof(Heap)); //one is number of heap
 
     //check if memory allocation fails
@@ -35,10 +35,10 @@ Heap *CreateHeap(int capacity,int heap_type){
         printf("Memory Error!");
         //return;
     }
-    h->heap_type = heap_type;
+    // h->heap_type = heap_type;
     h->count=0;
     h->capacity = capacity;
-    h->arr = (int *) malloc(capacity*sizeof(int)); //size in bytes
+    h->arr = (unsigned long *) malloc(capacity*sizeof(int)); //size in bytes
 
     //check if allocation succeed
     if ( h->arr == NULL){
@@ -56,7 +56,7 @@ void insert(Heap *h, int key){
     }
 }
 
-void heapify_bottom_top(Heap *h,int index){
+void heapify_bottom_top(Heap *h,long index){
     int temp;
     int parent_node = (index-1)/2;
 
@@ -69,11 +69,11 @@ void heapify_bottom_top(Heap *h,int index){
     }
 }
 
-void heapify_top_bottom(Heap *h, int parent_node){
-    int left = parent_node*2 + 1;
-    int right = parent_node*2 + 2;
-    int min;
-    int temp;
+void heapify_top_bottom(Heap *h, unsigned long parent_node){
+    long left = parent_node*2 + 1;
+    long right = parent_node*2 + 2;
+    unsigned long min;
+    unsigned long temp;
 
     if(left >= h->count || left <0)
         left = -1;
