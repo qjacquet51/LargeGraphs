@@ -1,10 +1,15 @@
 typedef struct 
 {
+	// tp1
 	unsigned long diameter;
 	unsigned long entry_max_size_cluster;
 	unsigned long max_size_cluster;
 	double ratio_max_size_cluster;
 	unsigned long nb_triangles;
+
+	// tp2
+	unsigned long *five_most_popular_pages;
+	unsigned long *five_last_popular_pages;
 } STATS;
 
 void initSTATS(STATS *s){
@@ -13,6 +18,9 @@ void initSTATS(STATS *s){
 	s->max_size_cluster = 0;
 	s->ratio_max_size_cluster = 0;
 	s->nb_triangles = 0;
+	
+	s->five_most_popular_pages = malloc(5*sizeof(unsigned long));
+	s->five_last_popular_pages = malloc(5*sizeof(unsigned long));
 }
 
 void showSTATS(STATS *s){

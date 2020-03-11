@@ -3,7 +3,8 @@
 #include "read_dic.c"
 #include "sort.c"
 #include "stats.c"
-#include "functions.c"
+#include "functions_p1.c"
+#include "functions_p2.c"
 
 int main(int argc,char** argv){
 
