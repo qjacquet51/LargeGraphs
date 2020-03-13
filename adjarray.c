@@ -1,28 +1,3 @@
-/*
-Maximilien Danisch
-September 2017
-http://bit.ly/danisch
-maximilien.danisch@gmail.com
-
-Info:
-Feel free to use these lines as you wish. This program loads a graph in main memory.
-
-To compile:
-"gcc adjlist.c -O9 -o adjlist".
-
-To execute:
-"./adjlist edgelist.txt".
-"edgelist.txt" should contain the graph: one edge on each line (two unsigned long (nodes' ID)) separated by a space.
-The prograph will load the graph in main memory and then terminate.
-
-Note:
-If the graph is directed (and weighted) with selfloops and you want to make it undirected unweighted without selfloops, use the following linux command line.
-awk '{if ($1<$2) print $1" "$2;else if ($2<$1) print $2" "$1}' net.txt | sort -n -k1,2 -u > net2.txt
-
-Performance:
-Up to 200 million edges on my laptop with 8G of RAM: takes more or less 4G of RAM and 30 seconds (I have an SSD hardrive) for 100M edges.
-*/
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>//to estimate the runing time
@@ -41,6 +16,7 @@ typedef struct {
 	edge *edges;//list of edges
 	unsigned long *cd;//cumulative degree cd[0]=0 length=n+1
 	unsigned long *adj;//concatenated lists of neighbors of all nodes
+	unsigned long *outD;
 } adjlist;
 
 //compute the maximum of three unsigned long
@@ -76,15 +52,15 @@ adjlist* readedgelist(char* input){
 }
 
 //building the adjacency matrix
-void mkadjlist(adjlist* g, int only_out_edges){
+void mkadjlist(adjlist* g){
 	unsigned long i,u,v;
 	unsigned long *d=calloc(g->n,sizeof(unsigned long));
+	g->outD=calloc(g->n,sizeof(unsigned long));
 
 	for (i=0;i<g->e;i++) {
 		d[g->edges[i].s]++;
-		if (only_out_edges == 0){
-			d[g->edges[i].t]++;
-		}
+		d[g->edges[i].t]++;
+		g->outD[g->edges[i].s]++;
 	}
 
 	g->cd=malloc((g->n+1)*sizeof(unsigned long));
@@ -100,9 +76,7 @@ void mkadjlist(adjlist* g, int only_out_edges){
 		u=g->edges[i].s;
 		v=g->edges[i].t;
 		g->adj[ g->cd[u] + d[u]++ ]=v;
-		if (only_out_edges == 0){
-			g->adj[ g->cd[v] + d[v]++ ]=u;
-		}
+		g->adj[ g->cd[v] + d[v]++ ]=u;
 	}
 
 	free(d);
@@ -117,29 +91,4 @@ void free_adjlist(adjlist *g){
 	free(g->adj);
 	free(g);
 }
-
-/*int main(int argc,char** argv){
-	adjlist* g;
-	time_t t1,t2;
-
-	t1=time(NULL);
-
-	printf("Reading edgelist from file %s\n",argv[1]);
-	g=readedgelist(argv[1]);
-
-	printf("Number of nodes: %lu\n",g->n);
-	printf("Number of edges: %lu\n",g->e);
-
-	printf("Building the adjacency list\n");
-	mkadjlist(g);
-	
-	free_adjlist(g);
-
-	t2=time(NULL);
-
-	printf("- Overall time = %ldh%ldm%lds\n",(t2-t1)/3600,((t2-t1)%3600)/60,((t2-t1)%60));
-
-	return 0;
-}
-*/
 

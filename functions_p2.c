@@ -13,11 +13,9 @@ void computePageRank(adjlist* g, STATS *s, double alpha, int t){
 	// Itérations
 	for (k=1; k<=t; ++k){
 
-		for (u=0; u<g->n; ++u){
-			
-			// On calcule les coeffs
-			for (i = g->cd[u]; i<g->cd[u+1]; ++i){
-				P_next[g->adj[i]] += P_prev[u]/(g->cd[u+1]-g->cd[u]);
+		for (i=0; i<g->e; ++i){
+			if (g->outD[g->edges[i].s] > 0){
+				P_next[g->edges[i].t] += P_prev[g->edges[i].s]/g->outD[g->edges[i].s];
 			}
 		}
 		for (u=0; u<g->n; ++u){

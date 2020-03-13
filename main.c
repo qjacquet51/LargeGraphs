@@ -13,6 +13,7 @@ int main(int argc,char** argv){
 	load_options(&options, argc, argv);
 
 	adjlist* g;
+	adjlist* g2;
 	time_t t1,t2;
 
 	//---------- CHARGEMENT GRAPHE
@@ -26,8 +27,7 @@ int main(int argc,char** argv){
 	printf("\tNombre d'aretes: %lu\n",g->e);
 
 	printf("\tConstruction de la liste d'adjacence ...\n");
-	if (options.project == '1'){ mkadjlist(g, 0); }
-	else { mkadjlist(g, 1); }
+	mkadjlist(g);
 
 	t2=time(NULL);
 	printf("FIN Lecture graphe en %ldh%ldm%lds\n",(t2-t1)/3600,((t2-t1)%3600)/60,((t2-t1)%60));

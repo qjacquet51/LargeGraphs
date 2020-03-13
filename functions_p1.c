@@ -206,7 +206,7 @@ void findTriangles(adjlist *g, STATS *s){
 			}
 		}
 		if (size_tsl[u] >= 2){
-			mergeSort(g, tsl[u], 0, size_tsl[u]-1);
+			mergeSort(tsl[u], 0, size_tsl[u]-1);
 		}
 	}
 	
