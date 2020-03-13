@@ -23,11 +23,26 @@ void initSTATS(STATS *s){
 	s->five_last_popular_pages = malloc(5*sizeof(unsigned long));
 }
 
-void showSTATS(STATS *s){
+void showSTATS(STATS *s, OPTIONS *options){
 	printf("\n----------- STATISTIQUES ------------\n");
-	printf("Taille plus grand cluster: %d\n", s->max_size_cluster);
-	printf("Ratio plus grand cluster: %.5f\n", s->ratio_max_size_cluster);
-	printf("Plus grand diametre trouve: %d\n", s->diameter);
-	printf("Nombre de triangles: %d\n", s->nb_triangles);
+
+	if (options->project == '1'){
+		printf("Taille plus grand cluster: %d\n", s->max_size_cluster);
+		printf("Ratio plus grand cluster: %.5f\n", s->ratio_max_size_cluster);
+		printf("Plus grand diametre trouve: %d\n", s->diameter);
+		printf("Nombre de triangles: %d\n", s->nb_triangles);
+	}
+
+	if (options->project == '2'){
+		int p;
+		for (p=0; p<5; ++p){
+			printf("Page la plus vue n%d:\t%lu\n", p+1, s->five_most_popular_pages[p]);
+		}
+		printf("\n");
+		for (p=4; p>=0; --p){
+			printf("Page la moins vue n%d:\t%lu\n", p+1, s->five_last_popular_pages[p]);
+		}
+	}
+	
 	printf("-------------------------------------\n");
 }

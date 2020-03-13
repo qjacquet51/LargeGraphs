@@ -26,7 +26,8 @@ int main(int argc,char** argv){
 	printf("\tNumber of edges: %lu\n",g->e);
 
 	printf("\tBuilding the adjacency list\n");
-	mkadjlist(g);
+	if (options.project == '1'){ mkadjlist(g, 0); }
+	else { mkadjlist(g, 1); }
 
 	t2=time(NULL);
 
@@ -44,24 +45,28 @@ int main(int argc,char** argv){
 
 		printf("\nDEBUT Calcul du diametre\n");
 		findDiameter(g, &s);
-		printf("DEBUT Calcul du diametre\n");
+		printf("FIN Calcul du diametre\n");
 
 		printf("\nDEBUT Calcul des triangles\n");
 		findTriangles(g, &s);
-		printf("DEBUT Calcul des triangles\n");
+		printf("FIN Calcul des triangles\n");
 	}
 
 	//====================== PROJET 2 ======================
 	if (options.project == '2'){
 		printf("\nDEBUT Lecture nom pages\n");
-		char * name = getName(options.dicFile, 13832572);
-		printf("%s\n", name);
+		//printf("%s\n", getName(options.dicFile, 13832572));
 		printf("\nFIN Lecture nom pages\n");
+
+		printf("\nDEBUT Page Rank\n");
+		computePageRank(g, &s, 0.15, 20);
+		printf("FIN Page Rank\n");
+
 	}
 
 
 
-	showSTATS(&s);
+	showSTATS(&s, &options);
 
 	//------------ LIBERATION GRAPHE
 	free_adjlist(g);

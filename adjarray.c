@@ -76,13 +76,15 @@ adjlist* readedgelist(char* input){
 }
 
 //building the adjacency matrix
-void mkadjlist(adjlist* g){
+void mkadjlist(adjlist* g, int only_out_edges){
 	unsigned long i,u,v;
 	unsigned long *d=calloc(g->n,sizeof(unsigned long));
 
 	for (i=0;i<g->e;i++) {
 		d[g->edges[i].s]++;
-		d[g->edges[i].t]++;
+		if (only_out_edges == 0){
+			d[g->edges[i].t]++;
+		}
 	}
 
 	g->cd=malloc((g->n+1)*sizeof(unsigned long));
@@ -98,7 +100,9 @@ void mkadjlist(adjlist* g){
 		u=g->edges[i].s;
 		v=g->edges[i].t;
 		g->adj[ g->cd[u] + d[u]++ ]=v;
-		g->adj[ g->cd[v] + d[v]++ ]=u;
+		if (only_out_edges == 0){
+			g->adj[ g->cd[v] + d[v]++ ]=u;
+		}
 	}
 
 	free(d);
