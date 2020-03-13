@@ -14,29 +14,24 @@ void merge(adjlist* g, unsigned long arr[], unsigned long l, unsigned long m, un
     i = 0; // Initial index of first subarray 
     j = 0; // Initial index of second subarray 
     k = l; // Initial index of merged subarray 
-    while (i < n1 && j < n2) 
-    { 
-        if (g->cd[L[i]+1]-g->cd[L[i]] <= g->cd[R[j]+1]-g->cd[R[j]]) 
-        { 
+    while (i < n1 && j < n2) { 
+        if (L[i] <= R[j]){ 
             arr[k] = L[i]; 
             i++; 
         } 
-        else
-        { 
+        else { 
             arr[k] = R[j]; 
             j++; 
         } 
         k++; 
     } 
   
-    while (i < n1) 
-    { 
+    while (i < n1) { 
         arr[k] = L[i]; 
         i++; 
         k++; 
     } 
-    while (j < n2) 
-    { 
+    while (j < n2) { 
         arr[k] = R[j]; 
         j++; 
         k++; 
@@ -45,8 +40,7 @@ void merge(adjlist* g, unsigned long arr[], unsigned long l, unsigned long m, un
   
 void mergeSort(adjlist* g, unsigned long arr[], unsigned long l, unsigned long r) 
 { 
-    if (l < r) 
-    { 
+    if (l < r) { 
         // Same as (l+r)/2, but avoids overflow for 
         // large l and h 
         unsigned long m = l+(r-l)/2; 

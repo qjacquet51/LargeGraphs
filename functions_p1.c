@@ -164,20 +164,30 @@ void findDiameter(adjlist* g, STATS *s){
 };
 
 unsigned long intersect(unsigned long u, unsigned long v, unsigned long** tsl, unsigned long *size_tsl){
-	unsigned long i, j;
-	unsigned long nb = 0;
-	for (i=0; i<size_tsl[u]; ++i){
-		if (v < tsl[u][i]){
-			for (j=0; j<size_tsl[v]; ++j){
-				if (tsl[u][i]==tsl[v][j]){
-					//printf("%d, %d, %d\n", u, v, tsl[u][i]);
-					++nb;
-					break;
-				}
-			}
-		}
-	}
-	return nb;
+	
+	unsigned long full_ix = 0;
+    unsigned long sub_ix = 0;
+    unsigned long curr_full, curr_sub;
+    unsigned long nb = 0;
+
+    while (full_ix < size_tsl[u] && sub_ix < size_tsl[v]){
+        curr_full = tsl[u][full_ix];
+        curr_sub = tsl[v][sub_ix];
+        if (curr_full == curr_sub && v < curr_full){
+            ++full_ix;
+            ++sub_ix;
+            ++nb;
+            continue;
+        }
+        if (curr_full < curr_sub){
+            ++ full_ix;
+        }
+        else{
+            ++ sub_ix;
+        }
+    }
+    return nb;
+    
 };
 
 void findTriangles(adjlist *g, STATS *s){
@@ -196,7 +206,7 @@ void findTriangles(adjlist *g, STATS *s){
 			}
 		}
 		if (size_tsl[u] >= 2){
-			mergeSort(g, tsl[u], 0, size_tsl[u]-2);
+			mergeSort(g, tsl[u], 0, size_tsl[u]-1);
 		}
 	}
 	
@@ -211,6 +221,7 @@ void findTriangles(adjlist *g, STATS *s){
 			}
 		}
 	}
+	intersect(u, v, tsl, size_tsl);
 
 	s->nb_triangles = nb_triangles;
 

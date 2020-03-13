@@ -19,20 +19,18 @@ int main(int argc,char** argv){
 	printf("\nDEBUT Lecture graphe\n");
 	t1=time(NULL);
 
-	printf("\tReading edgelist from file %s\n",options.inputFile);
+	printf("\tLecture du fichier %s\n",options.inputFile);
 	g=readedgelist(options.inputFile);
 
-	printf("\tNumber of nodes: %lu\n",g->n);
-	printf("\tNumber of edges: %lu\n",g->e);
+	printf("\tNombre de sommets: %lu\n",g->n);
+	printf("\tNombre d'aretes: %lu\n",g->e);
 
-	printf("\tBuilding the adjacency list\n");
+	printf("\tConstruction de la liste d'adjacence ...\n");
 	if (options.project == '1'){ mkadjlist(g, 0); }
 	else { mkadjlist(g, 1); }
 
 	t2=time(NULL);
-
-	printf("\t- Overall time = %ldh%ldm%lds\n",(t2-t1)/3600,((t2-t1)%3600)/60,((t2-t1)%60));
-	printf("FIN Lecture graphe\n");
+	printf("FIN Lecture graphe en %ldh%ldm%lds\n",(t2-t1)/3600,((t2-t1)%3600)/60,((t2-t1)%60));
 
 
 	STATS s;
@@ -40,27 +38,35 @@ int main(int argc,char** argv){
 
 	if (options.project == '1'){
 		printf("\nDEBUT Calcul des clusters\n");
+		t1 = time(NULL);
 		findClusters(g, &s);
-		printf("FIN Calcul des clusters\n");
+		t2 = time(NULL);
+		printf("FIN Calcul des clusters en %ldh%ldm%lds\n",(t2-t1)/3600,((t2-t1)%3600)/60,((t2-t1)%60));
 
 		printf("\nDEBUT Calcul du diametre\n");
+		t1 = time(NULL);
 		findDiameter(g, &s);
-		printf("FIN Calcul du diametre\n");
+		t2 = time(NULL);
+		printf("FIN Calcul du diametre en %ldh%ldm%lds\n",(t2-t1)/3600,((t2-t1)%3600)/60,((t2-t1)%60));
 
 		printf("\nDEBUT Calcul des triangles\n");
+		t1 = time(NULL);
 		findTriangles(g, &s);
-		printf("FIN Calcul des triangles\n");
+		t2 = time(NULL);
+		printf("FIN Calcul des triangles en %ldh%ldm%lds\n",(t2-t1)/3600,((t2-t1)%3600)/60,((t2-t1)%60));
 	}
 
 	//====================== PROJET 2 ======================
 	if (options.project == '2'){
-		printf("\nDEBUT Lecture nom pages\n");
+		//printf("\nDEBUT Lecture nom pages\n");
 		//printf("%s\n", getName(options.dicFile, 13832572));
-		printf("\nFIN Lecture nom pages\n");
+		//printf("\nFIN Lecture nom pages\n");
 
 		printf("\nDEBUT Page Rank\n");
+		t1 = time(NULL);
 		computePageRank(g, &s, 0.15, 20);
-		printf("FIN Page Rank\n");
+		t2 = time(NULL);
+		printf("FIN Page Rank en %ldh%ldm%lds\n",(t2-t1)/3600,((t2-t1)%3600)/60,((t2-t1)%60));
 
 	}
 
