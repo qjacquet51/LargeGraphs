@@ -5,6 +5,7 @@
 #include "stats.c"
 #include "functions_p1.c"
 #include "functions_p2.c"
+//#include "core_decomposition.c"
 
 int main(int argc,char** argv){
 
