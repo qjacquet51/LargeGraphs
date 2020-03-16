@@ -1,6 +1,0 @@
-#ifndef CORE_DECOMPOSITION_H
-#define CORE_DECOMPOSITION_H
-
-
-
-#endif

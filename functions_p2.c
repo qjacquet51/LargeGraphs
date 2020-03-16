@@ -1,9 +1,10 @@
 #include <math.h>
+#include "min_heap.h"
 
 void computePageRank(adjlist* g, STATS *s, double alpha, int t){
 
 	// Initialisation de P
-	double *P_prev = malloc(g->n*sizeof(double));
+	double *P_prev = calloc(g->n,sizeof(double));
 	double *P_next = calloc(g->n, sizeof(double));
 	unsigned long i, u;
 	int l, p, k;
@@ -38,7 +39,7 @@ void computePageRank(adjlist* g, STATS *s, double alpha, int t){
 
 	// On récupère les 5 meilleurs et 5 pires
 	double *best_five_values = calloc(5, sizeof(double));
-	double *worst_five_values = malloc(5*sizeof(double));
+	double *worst_five_values = calloc(5,sizeof(double));
 	for (p=0; p<5; ++p){ worst_five_values[p] = 1; }
 
 
@@ -74,4 +75,60 @@ void computePageRank(adjlist* g, STATS *s, double alpha, int t){
 			}
 		}
 	}
+
+	// on libère la mémoire
+	free(P_next);
+	free(P_prev);
+};
+
+void computeKCore(adjlist *g, STATS *s){
+	long int *d = malloc(g->n*sizeof(long int)); // -1 si il a été utilisé
+	unsigned long *kcore = malloc(g->n*sizeof(unsigned long)); // le numéro de k-core de chaque sommet
+	unsigned long *forbidden = calloc(g->n, sizeof(unsigned long));
+
+	unsigned long k, i, ind_min_d, cur_nb;
+	long int min_d;
+	long int c = 0;
+
+	// On crée la liste triée des sommets, des positions et des degrés
+	for (k=0; k<g->n; ++k){
+		d[k] = g->cd[k+1] - g->cd[k];
+	}
+
+	Heap *h = CreateHeap(g->n, d); 
+	for(i=0; i<g->n; ++i){
+        insert(h, i);
+    }
+
+
+	while (cur_nb < g->n){
+
+		// recherche du sommet
+		ind_min_d = PopMin(h);
+		min_d = h->weigths[ind_min_d];
+
+		// on calcule le numéro de k core
+		c = (c>min_d) ? c : min_d;
+		kcore[ind_min_d] = g->n-cur_nb;
+		forbidden[ind_min_d] = 1;
+
+		// on met à jour les voisins
+		for (i = g->cd[ind_min_d]; i<g->cd[ind_min_d+1]; ++i){
+			if (forbidden[g->adj[i]] == 0){
+				decreaseVal(h, g->adj[i], h->weigths[g->adj[i]]-1);
+			}
+		}
+		
+		++cur_nb;
+		
+	}
+
+	// pour les stats
+	s->k_core_value = c;
+
+	// on libère la mémoire
+	free(d);
+	free(kcore);
+	free(forbidden);
+
 };

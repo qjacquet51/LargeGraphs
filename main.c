@@ -1,8 +1,8 @@
 #include "adjarray.c"
 #include "argparse.c"
-#include "read_dic.c"
 #include "sort.c"
 #include "stats.c"
+#include "min_heap.c"
 #include "functions_p1.c"
 #include "functions_p2.c"
 
@@ -61,6 +61,12 @@ int main(int argc,char** argv){
 		//printf("\nDEBUT Lecture nom pages\n");
 		//printf("%s\n", getName(options.dicFile, 13832572));
 		//printf("\nFIN Lecture nom pages\n");
+
+		printf("\nDEBUT K core decomposition\n");
+		t1 = time(NULL);
+		computeKCore(g, &s);
+		t2 = time(NULL);
+		printf("FIN K core decomposition en %ldh%ldm%lds\n",(t2-t1)/3600,((t2-t1)%3600)/60,((t2-t1)%60));
 
 		printf("\nDEBUT Page Rank\n");
 		t1 = time(NULL);

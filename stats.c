@@ -10,6 +10,7 @@ typedef struct
 	// tp2
 	unsigned long *five_most_popular_pages;
 	unsigned long *five_last_popular_pages;
+	long int k_core_value;
 } STATS;
 
 void initSTATS(STATS *s){
@@ -19,8 +20,10 @@ void initSTATS(STATS *s){
 	s->ratio_max_size_cluster = 0;
 	s->nb_triangles = 0;
 	
-	s->five_most_popular_pages = malloc(5*sizeof(unsigned long));
-	s->five_last_popular_pages = malloc(5*sizeof(unsigned long));
+	s->five_most_popular_pages = calloc(5,sizeof(unsigned long));
+	s->five_last_popular_pages = calloc(5,sizeof(unsigned long));
+
+	s->k_core_value = 0;
 }
 
 void showSTATS(STATS *s, OPTIONS *options){
@@ -42,6 +45,9 @@ void showSTATS(STATS *s, OPTIONS *options){
 		for (p=4; p>=0; --p){
 			printf("Page la moins vue n%d:\t%lu\n", p+1, s->five_last_popular_pages[p]);
 		}
+
+		printf("\nk-core value du graph : %d\n", s->k_core_value);
+
 	}
 	
 	printf("-------------------------------------\n");
