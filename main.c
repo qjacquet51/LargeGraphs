@@ -1,11 +1,23 @@
-#include "adjarray.c"
-#include "argparse.c"
-#include "sort.c"
-#include "stats.c"
-#include "min_heap.c"
-#include "functions_p1.c"
-#include "functions_p2.c"
-//#include "core_decomposition.c"
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <math.h>
+#include <time.h>
+#include <string.h>
+
+#include "structs/adjarray.c"
+#include "structs/argparse.c"
+#include "structs/sort.c"
+#include "structs/stats.c"
+#include "structs/min_heap.c"
+#include "structs/fifo.c"
+
+#include "tp1/clusters.c"
+#include "tp1/triangles.c"
+#include "tp1/diameters.c"
+
+#include "tp2/kcore.c"
+#include "tp2/pagerank.c"
 
 int main(int argc,char** argv){
 
@@ -14,7 +26,6 @@ int main(int argc,char** argv){
 	load_options(&options, argc, argv);
 
 	adjlist* g;
-	adjlist* g2;
 	time_t t1,t2;
 
 	//---------- CHARGEMENT GRAPHE
@@ -37,7 +48,7 @@ int main(int argc,char** argv){
 	STATS s;
 	//====================== PROJET 1 ======================
 
-	if (options.project == '1'){
+	if (options.project == 1){
 		printf("\nDEBUT Calcul des clusters\n");
 		t1 = time(NULL);
 		findClusters(g, &s);
@@ -58,7 +69,7 @@ int main(int argc,char** argv){
 	}
 
 	//====================== PROJET 2 ======================
-	if (options.project == '2'){
+	if (options.project == 2){
 		//printf("\nDEBUT Lecture nom pages\n");
 		//printf("%s\n", getName(options.dicFile, 13832572));
 		//printf("\nFIN Lecture nom pages\n");
@@ -71,7 +82,7 @@ int main(int argc,char** argv){
 
 		printf("\nDEBUT Page Rank\n");
 		t1 = time(NULL);
-		computePageRank(g, &s, 0.15, 20);
+		computePageRank(g, &s, 0.15, 10, options.resultPkFile);
 		t2 = time(NULL);
 		printf("FIN Page Rank en %ldh%ldm%lds\n",(t2-t1)/3600,((t2-t1)%3600)/60,((t2-t1)%60));
 
