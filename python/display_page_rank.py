@@ -3,7 +3,9 @@ import pandas as pd
 
 NAME = "../results/alpha=0.15_alr21-dirLinks.txt"
 df = pd.DataFrame([l.replace("\n", "").split("\t") for l in open(NAME, "r").readlines()]).astype('float32')
-df = df[df[1]>0.0001]
-print(df)
-plt.scatter(df.iloc[:,1].values, df.iloc[:,2].values)
+df = df[df[1]>0.0001] # sinon le plot galère
+plt.scatter(pd.np.log(df.iloc[:,1].values), pd.np.log(df.iloc[:,3].values))
+plt.grid()
+plt.xlabel("log(Page Rank)")
+plt.ylabel("log(Out Degree)")
 plt.show()

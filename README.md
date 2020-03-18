@@ -12,5 +12,8 @@ Project 1:
 	.\main.exe -p 1 -f "com-amazon.ungraph-clean.txt"
 	.\main.exe -p 1 -f "com-lj.ungraph-clean.txt"
 
-Projet 2:
+Project 2:
 	.\main.exe -p 2 -f "alr21-dirLinks.txt" -a 0.15
+
+Project 3:
+	.\main.exe -p 3 -f ""

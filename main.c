@@ -19,6 +19,8 @@
 #include "tp2/kcore.c"
 #include "tp2/pagerank.c"
 
+#include "tp3/label_propagation.c"
+
 int main(int argc,char** argv){
 
 	//---------- CHARGEMENT DES OPTIONS
@@ -88,8 +90,16 @@ int main(int argc,char** argv){
 
 	}
 
+	//====================== PROJET 3 ======================
+	if (options.project == 3){
+		printf("\nDEBUT Label propagation\n");
+		t1 = time(NULL);
+		computeLabelPropagation(g, &s);
+		t2 = time(NULL);
+		printf("FIN Label propagation en %ldh%ldm%lds\n",(t2-t1)/3600,((t2-t1)%3600)/60,((t2-t1)%60));
+	}
 
-
+	//------------ Afficchage statistiques
 	showSTATS(&s, &options);
 
 	//------------ LIBERATION GRAPHE
