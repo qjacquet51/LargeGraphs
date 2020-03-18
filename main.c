@@ -20,6 +20,7 @@
 #include "tp2/pagerank.c"
 
 #include "tp3/label_propagation.c"
+#include "tp3/gen_graph.c"
 
 int main(int argc,char** argv){
 
@@ -92,6 +93,16 @@ int main(int argc,char** argv){
 
 	//====================== PROJET 3 ======================
 	if (options.project == 3){
+		unsigned long n_nodes=400;
+		double p=0.6;
+		double q=0.3;
+		char* input="data/generated/graph_1.txt";
+		printf("\nBEGIN Generate graph\n");
+		t1 = time(NULL);
+		generate_graph(n_nodes, p, q, input);
+		t2 = time(NULL);
+		printf("END Generate graph in %ldh%ldm%lds\n",(t2-t1)/3600,((t2-t1)%3600)/60,((t2-t1)%60));
+
 		printf("\nDEBUT Label propagation\n");
 		t1 = time(NULL);
 		computeLabelPropagation(g, &s);
