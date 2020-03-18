@@ -35,14 +35,14 @@ void generate_graph(unsigned long n_nodes, double p, double q, char* input){
             if(abs(i-u) < 100){
                 if(u!=i){
                     int r = rand() % 100;
-                    if(r >= p*100){
+                    if(r <= p*100){
                         fprintf(fptr, "%lu %lu\n", i, u);
                     }
                 }
             }
             else {
                 int r = rand() % 100;
-                if(r >= q*100){
+                if(r <= q*100){
                     fprintf(fptr, "%lu %lu\n", i, u);
                 }
             }
