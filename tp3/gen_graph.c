@@ -6,8 +6,6 @@
 #include <time.h>
 #include <string.h>
 
-#include "../structs/adjarray.h"
-#include "../structs/stats.h"
 
 void generate_graph(unsigned long n_nodes, double p, double q, char* input){
 
@@ -16,22 +14,22 @@ void generate_graph(unsigned long n_nodes, double p, double q, char* input){
 
     if(q > p){
         printf("Error: the values of q and p do not respect q <= p");
-        return 0;
+        exit(1);
     }
 
     // initializes the random number generator
     srand(time(NULL));
 
-    fprt = fopen(input, "w")
+    fptr = fopen(input, "w");
     if(fptr == NULL)
     {
-        printf("Error!");
+        printf("Error opening file!");
         exit(1);             
     }
 
-    for(i=0; i<n_nodes, ++i){
+    for(i=0; i<n_nodes; ++i){
         
-        for(u=0; u<n_nodes, ++u){
+        for(u=0; u<n_nodes; ++u){
 
             // Nodes in the same cluster
             if(abs(i-u) < 100){
@@ -51,6 +49,7 @@ void generate_graph(unsigned long n_nodes, double p, double q, char* input){
         }
     }
 
-}
+    fclose(fptr);
+};
 
 #endif
