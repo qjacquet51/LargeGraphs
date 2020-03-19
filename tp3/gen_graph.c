@@ -18,7 +18,7 @@ void generate_graph(unsigned long n_nodes, double p, double q, char* input){
     }
 
     // initializes the random number generator
-    srand(time(NULL));
+    //srand(time(NULL));
 
     fptr = fopen(input, "w");
     if(fptr == NULL) {

@@ -27,8 +27,8 @@ void computeLabelPropagation(adjlist *g, STATS *s){
             //srand(time(NULL));
             n1 = rand()%g->n;
             n2 = rand()%g->n;
-            printf("\n n1: %lu", n1);
-            printf("\n n2: %lu", n2);
+            //printf("\n n1: %lu", n1);
+            //printf("\n n2: %lu", n2);
             ln1 = labels[n1];
             ln2 = labels[n2];
             labels[n2] = ln1;
@@ -39,6 +39,7 @@ void computeLabelPropagation(adjlist *g, STATS *s){
         node_wtht_highest_freq = false;
         // Set the label with the highest frequency among the neighbours
         for(i=0; i<g->n; ++i){
+            printf("node number: %lu\n", i);
             unsigned long *n_labels = calloc(g->n, sizeof(unsigned long));
 
             for(u=g->cd[i]; u<g->cd[i+1]; ++u){
@@ -48,8 +49,9 @@ void computeLabelPropagation(adjlist *g, STATS *s){
             // Find the maximum
             maximum = n_labels[0];
             index = 0;
-            for(u=1; u<g->n; ++i){
+            for(u=1; u<g->n; ++u){
                 if(n_labels[u] > maximum){
+                    printf("Replace max\n");
                     maximum = n_labels[u];
                     index = u;
                 }
@@ -57,10 +59,12 @@ void computeLabelPropagation(adjlist *g, STATS *s){
             
             // Change the label of the current node if needed
             if(labels[i] != labels[index]){
+                printf("Replace label\n");
                 labels[i] = labels[index];
                 node_wtht_highest_freq = true;
             }
         }
+        printf("Labels set\n");
     }
 };
 
