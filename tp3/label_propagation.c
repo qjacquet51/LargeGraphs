@@ -15,7 +15,7 @@ void computeLabelPropagation(adjlist *g, STATS *s){
     unsigned long maximum, index;
     bool node_wtht_highest_freq=true;
 
-    unsigned long *labels = calloc(g->n * sizeof(unsigned long));
+    unsigned long *labels = calloc(g->n, sizeof(unsigned long));
     
     // Assgin unique label to each node
     for(i=0; i<g->n; ++i) labels[i] = i;
