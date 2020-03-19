@@ -39,7 +39,7 @@ void computeLabelPropagation(adjlist *g, STATS *s){
         node_wtht_highest_freq = false;
         // Set the label with the highest frequency among the neighbours
         for(i=0; i<g->n; ++i){
-            unsigned long *n_labels = calloc(g->n*sizeof(unsigned long));
+            unsigned long *n_labels = calloc(g->n, sizeof(unsigned long));
 
             for(u=g->cd[i]; u<g->cd[i+1]; ++u){
                 n_labels[u] = n_labels[u] + 1;
