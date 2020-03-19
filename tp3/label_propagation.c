@@ -40,9 +40,12 @@ void computeLabelPropagation(adjlist *g, STATS *s){
         // Set the label with the highest frequency among the neighbours
         for(i=0; i<g->n; ++i){
             printf("node number: %lu\n", i);
+            printf("Before calloc\n");
             unsigned long *n_labels = calloc(g->n, sizeof(unsigned long));
 
+            printf("update neighbours count labels");
             for(u=g->cd[i]; u<g->cd[i+1]; ++u){
+                printf("Neighbours %lu update label numbers\n", u);
                 n_labels[u] = n_labels[u] + 1;
             }
 
@@ -59,7 +62,7 @@ void computeLabelPropagation(adjlist *g, STATS *s){
             
             // Change the label of the current node if needed
             if(labels[i] != labels[index]){
-                printf("Replace label\n");
+                printf("Replace label\n\n");
                 labels[i] = labels[index];
                 node_wtht_highest_freq = true;
             }
