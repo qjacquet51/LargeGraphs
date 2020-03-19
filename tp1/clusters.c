@@ -1,7 +1,7 @@
 #ifndef CLUSTERS
 #define CLUSTERS
 
-#include "../structs/FIFO.h"
+#include "../structs/fifo.h"
 #include "../structs/adjarray.h"
 #include "../structs/stats.h"
 

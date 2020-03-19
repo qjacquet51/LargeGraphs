@@ -1,7 +1,7 @@
 #ifndef DIAMETERS
 #define DIAMETERS
 
-#include "../structs/FIFO.h"
+#include "../structs/fifo.h"
 #include "../structs/adjarray.h"
 #include "../structs/stats.h"
 

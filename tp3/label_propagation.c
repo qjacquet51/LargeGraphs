@@ -62,7 +62,6 @@ void computeLabelPropagation(adjlist *g, STATS *s){
             }
         }
     }
-
 };
 
 #endif
