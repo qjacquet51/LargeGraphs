@@ -5,7 +5,7 @@
 #include "../structs/adjarray.h"
 #include "../structs/min_heap.h"
 
-void computeKCore(adjlist *g, STATS *s){
+void computeKCore(adjlist *g, STATS *s, char* result_file){
 	long int *d = malloc(g->n*sizeof(long int)); // -1 si il a été utilisé
 	unsigned long *kcore = malloc(g->n*sizeof(unsigned long)); // le numéro de k-core de chaque sommet
 	unsigned long *forbidden = calloc(g->n, sizeof(unsigned long));
@@ -33,7 +33,7 @@ void computeKCore(adjlist *g, STATS *s){
 
 		// on calcule le numéro de k core
 		c = (c>min_d) ? c : min_d;
-		kcore[ind_min_d] = g->n-cur_nb;
+		kcore[ind_min_d] = c;
 		forbidden[ind_min_d] = 1;
 
 		// on met à jour les voisins
@@ -49,6 +49,17 @@ void computeKCore(adjlist *g, STATS *s){
 
 	// pour les stats
 	s->k_core_value = c;
+
+	
+	FILE * fp;
+   	fp = fopen (result_file,"w");
+   	for (i=0; i<g->n; ++i){
+   		if (g->cd[i+1]!=g->cd[i]){
+   			fprintf(fp, "%lu\t%d\t%d\n", i, kcore[i], g->cd[i+1]-g->cd[i]);
+   		}
+   	}
+    fclose (fp);
+
 
 	// on libère la mémoire
 	free(d);

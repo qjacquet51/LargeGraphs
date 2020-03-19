@@ -79,7 +79,7 @@ int main(int argc,char** argv){
 
 		printf("\nDEBUT K core decomposition\n");
 		t1 = time(NULL);
-		computeKCore(g, &s);
+		computeKCore(g, &s, options.resultKCoreFile);
 		t2 = time(NULL);
 		printf("FIN K core decomposition en %ldh%ldm%lds\n",(t2-t1)/3600,((t2-t1)%3600)/60,((t2-t1)%60));
 
@@ -94,9 +94,9 @@ int main(int argc,char** argv){
 	//====================== PROJET 3 ======================
 	if (options.project == 3){
 		unsigned long n_nodes=400;
-		double p=0.6;
-		double q=0.3;
-		char* input="data/generated/graph_1.txt";
+		double p=0.1;
+		double q=0.03;
+		char* input="instances/generated/graph_1.txt";
 		printf("\nBEGIN Generate graph\n");
 		t1 = time(NULL);
 		generate_graph(n_nodes, p, q, input);

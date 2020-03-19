@@ -88,6 +88,7 @@ unsigned long PopMin(Heap *h){
     // replace first node by last and delete last
     pop = h->arr[0];
     h->arr[0] = h->arr[h->count-1];
+    h->to_index[h->arr[0]] = 0;
     h->count--;
     if (h->count>0){
         heapify_top_bottom(h, 0);
@@ -102,6 +103,8 @@ void decreaseKey(Heap *h, unsigned long i, long int new_weigth)
         unsigned long temp = h->arr[i];
         h->arr[i] = h->arr[(i-1)/2];
         h->arr[(i-1)/2] = temp;
+        h->to_index[h->arr[i]] = i;
+        h->to_index[h->arr[(i-1)/2]] = (i-1)/2;
         i = (i-1)/2; 
     } 
 } 

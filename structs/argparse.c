@@ -43,12 +43,16 @@ void load_options(OPTIONS *options, int argc, char** argv){
     }
 
     // on construit les noms de fichier
-    options->resultPkFile = (char *) malloc(1 + 14 + strlen(str_alpha) 
+    options->resultPkFile = (char *) malloc(1 + 17 + strlen(str_alpha) 
                                                 + 1 + strlen(inputFile) );
-    strcpy(options->resultPkFile, "results/alpha=");
+    strcpy(options->resultPkFile, "results/pk_alpha=");
     strcat(options->resultPkFile, str_alpha);
     strcat(options->resultPkFile, "_");
     strcat(options->resultPkFile, inputFile);
+
+    options->resultKCoreFile = (char *) malloc(1 + 14 + strlen(inputFile) );
+    strcpy(options->resultKCoreFile, "results/kcore_");
+    strcat(options->resultKCoreFile, inputFile);
 
     options->inputFile = (char *) malloc(1 + 10 + strlen(inputFile) );
     strcpy(options->inputFile, "instances/");

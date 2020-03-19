@@ -21,8 +21,7 @@ void generate_graph(unsigned long n_nodes, double p, double q, char* input){
     srand(time(NULL));
 
     fptr = fopen(input, "w");
-    if(fptr == NULL)
-    {
+    if(fptr == NULL) {
         printf("Error opening file!");
         exit(1);             
     }
@@ -31,18 +30,18 @@ void generate_graph(unsigned long n_nodes, double p, double q, char* input){
         
         for(u=0; u<n_nodes; ++u){
 
+            if (u==i){
+                continue;
+            }
+
             // Nodes in the same cluster
-            if(abs(i-u) < 100){
-                if(u!=i){
-                    int r = rand() % 100;
-                    if(r <= p*100){
-                        fprintf(fptr, "%lu %lu\n", i, u);
-                    }
+            if(i/100==u/100){
+                if (rand() % 100 <= p*100){
+                    fprintf(fptr, "%lu %lu\n", i, u);
                 }
             }
             else {
-                int r = rand() % 100;
-                if(r <= q*100){
+                if(rand() % 100 <= q*100){
                     fprintf(fptr, "%lu %lu\n", i, u);
                 }
             }

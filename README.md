@@ -14,6 +14,7 @@ Project 1:
 
 Project 2:
 	.\main.exe -p 2 -f "alr21-dirLinks.txt" -a 0.15
+	.\main.exe -p 2 -f "net.txt" -a 0.15
 
 Project 3:
 	.\main.exe -p 3 -f ""
