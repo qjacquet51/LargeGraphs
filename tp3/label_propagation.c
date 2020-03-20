@@ -15,7 +15,9 @@ void computeLabelPropagation(adjlist *g, STATS *s){
     unsigned long maximum, index;
     bool node_wtht_highest_freq=true;
 
+    printf("Before calloc\n");
     unsigned long *labels = calloc(g->n, sizeof(unsigned long));
+    unsigned long *n_labels  = calloc(g->n, sizeof(unsigned long));
     
     // Assgin unique label to each node
     for(i=0; i<g->n; ++i) labels[i] = i;
@@ -41,9 +43,9 @@ void computeLabelPropagation(adjlist *g, STATS *s){
         for(i=0; i<g->n; ++i){
             printf("node number: %lu\n", i);
             printf("Before calloc\n");
-            unsigned long *n_labels = calloc(g->n, sizeof(unsigned long));
+            n_labels = calloc(g->n, sizeof(unsigned long));
 
-            printf("update neighbours count labels");
+            printf("Update neighbours count labels\n");
             for(u=g->cd[i]; u<g->cd[i+1]; ++u){
                 printf("Neighbours %lu update label numbers\n", u);
                 n_labels[u] = n_labels[u] + 1;
@@ -66,6 +68,9 @@ void computeLabelPropagation(adjlist *g, STATS *s){
                 labels[i] = labels[index];
                 node_wtht_highest_freq = true;
             }
+            printf("Before free n_labels\n");
+            free(n_labels);
+            printf("After free n_labels\n");
         }
         printf("Labels set\n");
     }
