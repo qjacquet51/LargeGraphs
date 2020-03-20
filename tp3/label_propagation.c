@@ -47,7 +47,6 @@ void computeLabelPropagation(adjlist *g, STATS *s){
 
             printf("Update neighbours count labels\n");
             for(u=g->cd[i]; u<g->cd[i+1]; ++u){
-                printf("Neighbours %lu update label numbers\n", u);
                 n_labels[u] = n_labels[u] + 1;
             }
 
@@ -64,7 +63,8 @@ void computeLabelPropagation(adjlist *g, STATS *s){
             
             // Change the label of the current node if needed
             if(labels[i] != labels[index]){
-                printf("Replace label\n\n");
+                printf("Replace label of node %lu (%lu) by label of node %lu (%lu)\n", i, labels[i], index, labels[index]);
+                printf("number of nodes: %lu\n", g->n);
                 labels[i] = labels[index];
                 node_wtht_highest_freq = true;
             }
